@@ -40,7 +40,10 @@ class AerospikeConfig private(val properties: Map[String, Any]) extends Serializ
   }
 
   def schemaScan(): Int = {
-    get(AerospikeConfig.SchemaScan).asInstanceOf[Int]
+    get(AerospikeConfig.SchemaScan) match {
+      case i: Int => i
+      case s: String => s.toInt
+    }
   }
 
   def timeOut(): Int = {

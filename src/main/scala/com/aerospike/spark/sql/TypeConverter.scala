@@ -5,6 +5,8 @@ import org.apache.spark.sql.types._
 import collection.JavaConverters._
 import com.aerospike.client.Bin
 
+import scala.util.Try
+
 import scala.collection.mutable
 
 
@@ -38,7 +40,7 @@ object TypeConverter{
           case _: DoubleType =>  Option(binVal).map(_.asInstanceOf[java.lang.Number].doubleValue()).orNull
           case _: ArrayType => binVal
           case _: MapType => Option(binVal).map(_.asInstanceOf[java.util.Map[Any,Any]].asScala).orNull
-          case _: BinaryType => Option(binVal).map(_.asInstanceOf[Array[Byte]]).orNull
+          case _: BinaryType => Try(Option(binVal).map(_.asInstanceOf[Array[Byte]]).orNull).getOrElse(null)
           case null => null
           case _ => Option(binVal).map(_.toString).orNull
         }
