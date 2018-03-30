@@ -5,11 +5,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.sources._
-import org.apache.spark.sql.types.BinaryType
-import org.apache.spark.sql.types.StringType
-import org.apache.spark.sql.types.StructField
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.types.IntegerType
+import org.apache.spark.sql.types._
 import com.aerospike.client.Value
 import com.aerospike.client.query.Statement
 import com.typesafe.scalalogging.slf4j.LazyLogging
@@ -31,7 +27,8 @@ class AerospikeRelation(config: AerospikeConfig, userSchema: StructType)(@transi
         StructField(config.digestColumn(), BinaryType, nullable = false),
         StructField(config.expiryColumn(), IntegerType, nullable = false),
         StructField(config.generationColumn(), IntegerType, nullable = false),
-        StructField(config.ttlColumn(), IntegerType, nullable = false)
+        StructField(config.ttlColumn(), IntegerType, nullable = false),
+        StructField(config.lutColumn(), LongType, nullable = false)  //fake Last Update Time column (represented in nanoseconds)
       )
 
       val stmt = new Statement()

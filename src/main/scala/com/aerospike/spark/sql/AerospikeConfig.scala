@@ -69,6 +69,10 @@ class AerospikeConfig private(val properties: Map[String, Any]) extends Serializ
     get(AerospikeConfig.TTLColumn).asInstanceOf[String]
   }
 
+  def lutColumn(): String = {
+    get(AerospikeConfig.LUTColumn).asInstanceOf[String]
+  }
+
   override def toString: String = {
     val buff = new StringBuffer("[")
     properties.map(f => {
@@ -150,6 +154,9 @@ object AerospikeConfig {
 
   val TTLColumn = "aerospike.ttlColumn"
   defineProperty(TTLColumn, "__ttl")
+
+  val LUTColumn = "aerospike.lutColumn"
+  defineProperty(LUTColumn, "__lut")
 
   private def defineProperty(key: String, defaultValue: Any) : Unit = {
     val lowerKey = key.toLowerCase()

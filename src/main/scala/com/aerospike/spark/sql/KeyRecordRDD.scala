@@ -83,32 +83,32 @@ class KeyRecordRDD(
   private def filterToQualifier(filter: Filter) = filter match {
     case EqualTo(attribute, value) =>
       if (isList(attribute)){
-        new Qualifier(attribute, FilterOperation.LIST_CONTAINS, Value.get(value))  // TODO experimental
+        QualifierFactory.create(attribute, FilterOperation.LIST_CONTAINS, value)  // TODO experimental
       } else if (isMap(attribute)){
-        new Qualifier(attribute, FilterOperation.MAP_KEYS_CONTAINS, Value.get(value)) //TODO experimental
+        QualifierFactory.create(attribute, FilterOperation.MAP_KEYS_CONTAINS, value) //TODO experimental
       } else {
-        new Qualifier(attribute, FilterOperation.EQ, Value.get(value))
+        QualifierFactory.create(attribute, FilterOperation.EQ, value)
       }
     case GreaterThanOrEqual(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.GTEQ, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.GTEQ, value)
 
     case GreaterThan(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.GT, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.GT, value)
 
     case LessThanOrEqual(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.LTEQ, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.LTEQ, value)
 
     case LessThan(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.LT, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.LT, value)
 
     case StringStartsWith(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.START_WITH, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.START_WITH, value)
 
     case StringEndsWith(attribute, value) =>
-      new Qualifier(attribute, FilterOperation.ENDS_WITH, Value.get(value))
+      QualifierFactory.create(attribute, FilterOperation.ENDS_WITH, value)
 
     case IsNotNull(attribute) =>
-      new Qualifier(attribute, FilterOperation.NOTEQ, Value.getAsNull)
+      QualifierFactory.create(attribute, FilterOperation.NOTEQ, Value.getAsNull)
 
     case _ =>
       logger.debug(s"Not matching filter: ${filter.toString}")

@@ -53,10 +53,10 @@ object AerospikeConnection {
     val newClient = new AerospikeClient(clientPolicy, host, port)
 
     // set all the timeouts
-    newClient.writePolicyDefault.timeout = timeOut
-    newClient.readPolicyDefault.timeout = timeOut
-    newClient.scanPolicyDefault.timeout = timeOut
-    newClient.queryPolicyDefault.timeout = timeOut
+    newClient.writePolicyDefault.socketTimeout = timeOut
+    newClient.readPolicyDefault.socketTimeout = timeOut
+    newClient.scanPolicyDefault.socketTimeout = timeOut
+    newClient.queryPolicyDefault.socketTimeout = timeOut
 
     for (node <- newClient.getNodes) {
       clientCache += (node.getHost.toString -> newClient)

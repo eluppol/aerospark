@@ -2,7 +2,7 @@ import sbtassembly.MergeStrategy._
 
 name := "aerospike-spark"
 
-version := "1.1.5"
+version := "1.1.6"
 
 organization := "com.aerospike"
 
@@ -19,7 +19,7 @@ fork in test := true
 libraryDependencies ++= Seq(
   "org.apache.spark"           %% "spark-core"            % "2.0.0" % Provided,
   "org.apache.spark"           %% "spark-sql"             % "2.0.0" % Provided,
-  "com.aerospike"              %  "aerospike-helper-java" % "1.2.2",
+  "com.aerospike"              %  "aerospike-helper-java" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging-slf4j"   % "2.1.2",
   "org.scalatest"              %% "scalatest"             % "2.2.1" % Test
 )
