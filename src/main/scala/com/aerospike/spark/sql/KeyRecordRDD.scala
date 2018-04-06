@@ -56,11 +56,11 @@ class KeyRecordRDD(
 
     val metaFields = TypeConverter.metaFields(aerospikeConfig)
 
-    if (requiredColumns != null && requiredColumns.length > 0){
-      val binsOnly = TypeConverter.binNamesOnly(requiredColumns, metaFields)
-      logDebug(s"Bin names: $binsOnly")
-      stmt.setBinNames(binsOnly: _*)
-    }
+//    if (requiredColumns != null && requiredColumns.length > 0){
+//      val binsOnly = TypeConverter.binNamesOnly(requiredColumns, metaFields)
+//      logDebug(s"Bin names: $binsOnly")
+//      stmt.setBinNames(binsOnly: _*)
+//    }
 
     val queryEngine = AerospikeConnection.getQueryEngine(aerospikeConfig)
     val client = AerospikeConnection.getClient(aerospikeConfig)
@@ -135,7 +135,6 @@ class KeyRecordRDD(
 class RowIterator[Row] (val kri: KeyRecordIterator, schema: StructType, config: AerospikeConfig, requiredColumns: Array[String] = null)
   extends Iterator[org.apache.spark.sql.Row] with LazyLogging {
 
-
   def hasNext: Boolean = {
     kri.hasNext
   }
@@ -158,6 +157,9 @@ class RowIterator[Row] (val kri: KeyRecordIterator, schema: StructType, config: 
     val ttl: Int = kr.record.getTimeToLive
     val ttlName: String = config.ttlColumn()
 
+    val lut: Long = Long.MaxValue
+    val lutName: String = config.lutColumn()
+
     val fields = requiredColumns.map { field =>
       val value = field match {
         case x if x.equals(digestName) => digest
@@ -165,6 +167,7 @@ class RowIterator[Row] (val kri: KeyRecordIterator, schema: StructType, config: 
         case x if x.equals(expirationName) => expiration
         case x if x.equals(generationName) => generation
         case x if x.equals(ttlName) => ttl
+        case x if x.equals(lutName) => lut
         case _ => TypeConverter.binToValue(schema, (field, kr.record.bins.get(field)))
       }
       logger.debug(s"$field = $value")
