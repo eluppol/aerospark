@@ -12,7 +12,7 @@ object QualifierFactory {
         case calendar: Calendar =>
           calendar.getTimeInMillis * 1000000 // we need time in nanoseconds
         case _ =>
-          value.asInstanceOf[Long]
+          value.asInstanceOf[Long] * 1000000000L
       }
       return new LatestUpdateQualifier(operation, Value.get(time))
     } else {

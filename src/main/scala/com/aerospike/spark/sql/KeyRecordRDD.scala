@@ -157,8 +157,10 @@ class RowIterator[Row] (val kri: KeyRecordIterator, schema: StructType, config: 
     val ttl: Int = kr.record.getTimeToLive
     val ttlName: String = config.ttlColumn()
 
-    val lut: Long = Long.MaxValue
+    val lut: Long = System.currentTimeMillis() / 1000 - (config.defaultTTL() * 24 * 60 * 60 - ttl)
     val lutName: String = config.lutColumn()
+
+
 
     val fields = requiredColumns.map { field =>
       val value = field match {
