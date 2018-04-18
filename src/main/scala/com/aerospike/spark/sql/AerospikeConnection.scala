@@ -58,6 +58,10 @@ object AerospikeConnection {
     newClient.scanPolicyDefault.socketTimeout = timeOut
     newClient.queryPolicyDefault.socketTimeout = timeOut
 
+    newClient.queryPolicyDefault.priority = config.scanPriority()
+    newClient.scanPolicyDefault.priority = config.scanPriority()
+    newClient.readPolicyDefault.priority = config.scanPriority()
+
     for (node <- newClient.getNodes) {
       clientCache += (node.getHost.toString -> newClient)
     }

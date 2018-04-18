@@ -1,8 +1,7 @@
 package com.aerospike.spark.sql
 
 import scala.collection.immutable.Map
-import com.aerospike.client.policy.CommitLevel
-import com.aerospike.client.policy.GenerationPolicy
+import com.aerospike.client.policy.{CommitLevel, GenerationPolicy, Priority}
 
 /**
   * this class is a container for the properties used during the
@@ -77,6 +76,10 @@ class AerospikeConfig private(val properties: Map[String, Any]) extends Serializ
     get(AerospikeConfig.DefaultTTL).asInstanceOf[Int]
   }
 
+  def scanPriority() : Priority = {
+    Priority.valueOf(get(AerospikeConfig.ScanPriority).asInstanceOf[String])
+  }
+
   override def toString: String = {
     val buff = new StringBuffer("[")
     properties.map(f => {
@@ -111,7 +114,8 @@ object AerospikeConfig {
     AerospikeConfig.GenerationColumn -> "__generation",
     AerospikeConfig.TTLColumn -> "__ttl",
     AerospikeConfig.LUTColumn -> "__lut",
-    AerospikeConfig.DefaultTTL -> 60)
+    AerospikeConfig.DefaultTTL -> 60,
+    AerospikeConfig.ScanPriority -> "DEFAULT")
 
   val SeedHost = "aerospike.seedhost"
   defineProperty(SeedHost, "127.0.0.1")
@@ -166,6 +170,9 @@ object AerospikeConfig {
 
   val DefaultTTL = "aerospike.defaultTTL"
   defineProperty(DefaultTTL, 60)
+
+  val ScanPriority = "aerospike.scanPriority"
+  defineProperty(ScanPriority, "DEFAULT")
 
   private def defineProperty(key: String, defaultValue: Any) : Unit = {
     val lowerKey = key.toLowerCase()
